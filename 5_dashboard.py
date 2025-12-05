@@ -103,6 +103,37 @@ for f in x_fund:
 
 # 3D Plot
 fig = go.Figure(data=[go.Surface(z=z_risk, x=x_fund*10000, y=y_illiq)])
+# ... (Your existing loops that calculate z_risk are above here) ...
+
+# 1. Create the Surface Map
+fig = go.Figure(data=[go.Surface(z=z_risk, x=x_fund*10000, y=y_illiq)])
+
+# --- PASTE THIS NEW BLOCK HERE ---
+# Add a "You Are Here" Red Dot
+fig.add_trace(go.Scatter3d(
+    x=[fund_bps],    # User's Funding Input (X-axis)
+    y=[illiq_sigma], # User's Liquidity Input (Y-axis)
+    z=[predicted_return], # The Calculated Risk (Z-axis)
+    mode='markers',
+    marker=dict(size=12, color='red', symbol='diamond', line=dict(color='white', width=2)),
+    name='Your Portfolio'
+))
+# ---------------------------------
+
+# 2. Update Layout (Your existing code)
+fig.update_layout(
+    title="3D Risk Topology (Red Diamond = You)",
+    scene=dict(
+        xaxis_title='Funding (bps)',
+        yaxis_title='Illiquidity (Sigma)',
+        zaxis_title='Predicted VaR'
+    ),
+    template="plotly_dark",
+    height=500
+)
+
+# 3. Show Chart (Your existing code)
+st.plotly_chart(fig, use_container_width=True)
 fig.update_layout(
     title="3D Risk Topology",
     scene=dict(
